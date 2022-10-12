@@ -184,8 +184,7 @@ app.layout = dbc.Container(fluid=True,
      
      
      html.P(),
-     html.P(),
-     html.P(),
+     #html.P(),
 
      dbc.Card(
         dbc.Row(
@@ -194,7 +193,7 @@ app.layout = dbc.Container(fluid=True,
 html.Hr(style={'borderWidth': "1.9vh", "width": "100%", "color": "#04AEC4"}),
 #### Device-1FA1185
      html.P(),
-     html.P(),
+    # html.P(),
 html.H5("Device ID: 1FA1185 ;  Location ID: A009158"
         ,style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgb(0,0,0,0.0)","text-align":"center","color":"#04AEC4",}
         ),
@@ -331,6 +330,7 @@ dash_table.DataTable(
                     'text-align': 'center',
                     'overflow-y': 'auto',
                     'padding-left': '2%',
+                    'pointer-events':'none',
                 },
                 style_table={
                     'overflowX': 'auto', 'margin-top': '2%', 'overflow-y': 'auto'},
@@ -517,6 +517,7 @@ dash_table.DataTable(
                     'text-align': 'center',
                     'overflow-y': 'auto',
                     'padding-left': '2%',
+                    'pointer-events':'none',
                 },
                 style_table={
                     'overflowX': 'auto', 'margin-top': '2%', 'overflow-y': 'auto'},
@@ -878,7 +879,8 @@ def update_1FA1185_graph(n_intervals):
                          "Event_time (UTC+3)": "Event_time (UTC+3)",
                          "Current_Volume (liters)": "Current_Volume (liters)"
                      }
-                      , color_discrete_sequence=["#04AEC4"],height=325
+                      , color_discrete_sequence=["#04AEC4"],height=325,
+                      
                       )
     fig1FA1185.update_layout({
     'plot_bgcolor': 'rgba(0, 0, 0, 0)',
@@ -886,10 +888,13 @@ def update_1FA1185_graph(n_intervals):
     'margin':{'l': 10, 'r': 10},
     'font_color':"#ffffff",
     'title_font_color':"#ffffff",
-    "title_font":{'size': 20},
+    "title_font":{'size': 15},
     })
     fig1FA1185.update_xaxes(showgrid=True)
     fig1FA1185.update_yaxes(showgrid=True)
+    fig1FA1185.layout.xaxis.fixedrange = True
+    fig1FA1185.layout.yaxis.fixedrange = True
+    
     return fig1FA1185
 
 ########################################
@@ -926,10 +931,12 @@ def update_1FA1A01_graph(n_intervals):
     'margin':{'l': 10, 'r': 10},
     'font_color':"#ffffff",
     'title_font_color':"#ffffff",
-    "title_font":{'size': 20},
+    "title_font":{'size': 15},
     })
     fig1FA1A01.update_xaxes(showgrid=True)
     fig1FA1A01.update_yaxes(showgrid=True)
+    fig1FA1A01.layout.xaxis.fixedrange = True
+    fig1FA1A01.layout.yaxis.fixedrange = True
     return fig1FA1A01
 
 ########################################
@@ -946,10 +953,10 @@ def update_1FA1185_table(n_intervals):
     df1['Level'] = round(df1['Level']* 1.4286 ,2)
     df1['Event_type'] = df1['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df1 = df1.sort_values(by = 'time',ascending = False)
-    df1['Volume_Change (liters)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
+    df1['ΔVolume (Lts)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
     df1 = df1.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
-                              ,'Level':'Current_Volume (liters)'})
-    df1 = df1[['Event_time (UTC+3)','Event_type','Current_Volume (liters)','Volume_Change (liters)',]]
+                              ,'Level':'Volume (Lts)'})
+    df1 = df1[['Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)',]]
     newdf2 = df1.to_dict('records')
     return (newdf2)
 
@@ -967,10 +974,10 @@ def update_1FA1A01_table(n_intervals):
     df2['Level'] = round(df2['Level']* 1.4286 ,2)
     df2['Event_type'] = df2['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df2 = df2.sort_values(by = 'time',ascending = False)
-    df2['Volume_Change (liters)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
+    df2['ΔVolume (Lts)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
     df2 = df2.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
-                              ,'Level':'Current_Volume (liters)'})
-    df2 = df2[['Event_time (UTC+3)','Event_type','Current_Volume (liters)','Volume_Change (liters)',]]
+                              ,'Level':'Volume (Lts)'})
+    df2 = df2[['Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)',]]
     newdf3 = df2.to_dict('records')
     return (newdf3)
 
