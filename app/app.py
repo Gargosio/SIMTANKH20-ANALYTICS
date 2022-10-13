@@ -57,7 +57,7 @@ df1 = df1.sort_values(by = 'time',ascending = False)
 df1['Volume_Change (liters)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
 df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
 df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-df1 = df1[df1['timediff'] <= 864000] #3days###################################################
+df1 = df1[df1['timediff'] <= 1296000] #3days###################################################
 df1 = df1.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
                           ,'Level':'Current_Volume (liters)'})
 df1 = df1[[ 'Event_time (UTC+3)','Event_type','Current_Volume (liters)','Volume_Change (liters)',]]
@@ -85,7 +85,7 @@ df2 = df2.sort_values(by = 'time',ascending = False)
 df2['Volume_Change (liters)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
 df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
 df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-df2 = df2[df2['timediff'] <= 864000] #3days###################################################
+df2 = df2[df2['timediff'] <= 1296000] #3days###################################################
 df2 = df2.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
                           ,'Level':'Current_Volume (liters)'})
 df2 = df2[[ 'Event_time (UTC+3)','Event_type','Current_Volume (liters)','Volume_Change (liters)',]]
@@ -219,7 +219,7 @@ dbc.Col(dbc.Card([
                # html.P("This is some card text", className="card-text"),
             ]  
         ),
-    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgba(0,0,0,0.0)",'height':'170px',},
+    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"#04AEC4",'height':'170px',},
    
     ),xs=12,sm=6,md=4,lg=4,xl=4,
     style = {"margin-top":"1%",}),
@@ -247,7 +247,7 @@ dbc.Col(dbc.Card([
                # html.P("This is some card text", className="card-text"),
             ]  
         ),
-    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgba(0,0,0,0.0)",'height':'170px',},
+    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"#04AEC4",'height':'170px',},
    
     ),xs=12,sm=6,md=4,lg=4,xl=4,
     style = {"margin-top":"1%",}),
@@ -274,7 +274,7 @@ dbc.Col(dbc.Card([
                # html.P("This is some card text", className="card-text"),
             ]  
         ),
-    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgba(0,0,0,0.0)",'height':'170px',},
+    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"#04AEC4",'height':'170px',},
    
     ),xs=12,sm=6,md=4,lg=4,xl=4,
     style = {"margin-top":"1%",}),
@@ -407,7 +407,7 @@ dbc.Col(dbc.Card([
                # html.P("This is some card text", className="card-text"),
             ]  
         ),
-    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgba(0,0,0,0.0)",'height':'170px',},
+    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"#04AEC4",'height':'170px',},
    
     ),xs=12,sm=6,md=4,lg=4,xl=4,
     style = {"margin-top":"1%",}),
@@ -435,7 +435,7 @@ dbc.Col(dbc.Card([
                # html.P("This is some card text", className="card-text"),
             ]  
         ),
-    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgba(0,0,0,0.0)",'height':'170px',},
+    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"#04AEC4",'height':'170px',},
    
     ),xs=12,sm=6,md=4,lg=4,xl=4,
     style = {"margin-top":"1%",}),
@@ -462,7 +462,7 @@ dbc.Col(dbc.Card([
                # html.P("This is some card text", className="card-text"),
             ]  
         ),
-    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgba(0,0,0,0.0)",'height':'170px',},
+    ],style = {"background-color":"rgba(0,0,0,0.0)","border-color":"#04AEC4",'height':'170px',},
    
     ),xs=12,sm=6,md=4,lg=4,xl=4,
     style = {"margin-top":"1%",}),
@@ -554,7 +554,7 @@ dash_table.DataTable(
             className="mb-4",
          ),
   html.Hr(style={'borderWidth': "1.9vh", "width": "100%", "color": "#04AEC4"}),      
-       html.P(),
+       #html.P(),
        
       # html.P(["℗ Powered by Drocon Infographics"], className = 'flicker2'),
         #########################################################
@@ -585,7 +585,7 @@ def fn_currentvol(n_intervals):
     df1['time'] += timedelta(hours=3)
     df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 864000] #3days###################################################
+    df1 = df1[df1['timediff'] <= 1296000] #3days###################################################
     df1['Level'] = round(df1['Level']* 1.4286 ,2)
     df1 = df1.sort_values(by = 'time',ascending = False)
     # df1['Volume_Change (liters)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
@@ -607,7 +607,7 @@ def fn_currentime(n_intervals):
     df1 = df1.sort_values(by = 'time',ascending = False)
     df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 864000] #3days###################################################
+    df1 = df1[df1['timediff'] <= 1296000] #3days###################################################
     # df1['Volume_Change (liters)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
     # df1 = df1.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
     #                           ,'Level':'Current_Volume (liters)'})
@@ -631,7 +631,7 @@ def fn_highestinc(n_intervals):
     df1['Volume_Change (liters)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
     df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 864000] #3days###################################################
+    df1 = df1[df1['timediff'] <= 1296000] #3days###################################################
     maxlevinc = df1["Volume_Change (liters)"].where(df1['Event_type'] == 'Level Increase').max()
     return (maxlevinc)
 ########################################
@@ -650,7 +650,7 @@ def fn_highestinctime(n_intervals):
     df1['Volume_Change (liters)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
     df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 864000] #3days###################################################
+    df1 = df1[df1['timediff'] <= 1296000] #3days###################################################
     maxlevinc = df1["Volume_Change (liters)"].where(df1['Event_type'] == 'Level Increase').max()
     maxinctime = df1["time"].where(df1['Volume_Change (liters)'] == maxlevinc).max()
     maxinctime = maxinctime.strftime("%d-%b-%Y %H:%M:%S")
@@ -672,7 +672,7 @@ def fn_highestdec(n_intervals):
     df1['Volume_Change (liters)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
     df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 864000] #3days###################################################
+    df1 = df1[df1['timediff'] <= 1296000] #3days###################################################
     maxlevdec = df1["Volume_Change (liters)"].where(df1['Event_type'] == 'Level Decrease').max()
     # maxlevdec = df1["Volume_Change (liters)"].where(df1['Event_type'] == 'Level Decrease').max()
     return (maxlevdec)    
@@ -693,7 +693,7 @@ def fn_highestdectime(n_intervals):
     df1['Volume_Change (liters)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
     df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 864000] #3days###################################################
+    df1 = df1[df1['timediff'] <= 1296000] #3days###################################################
     maxlevdec = df1["Volume_Change (liters)"].where(df1['Event_type'] == 'Level Decrease').max()
     maxdectime = df1["time"].where(df1['Volume_Change (liters)'] == maxlevdec).max()
     maxdectime = maxdectime.strftime("%d-%b-%Y %H:%M:%S")
@@ -714,7 +714,7 @@ def fn_currentvoldf2(n_intervals):
     df2['Volume_Change (liters)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
     df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 864000] #3days###################################################
+    df2 = df2[df2['timediff'] <= 1296000] #3days###################################################
     # df2 = df2.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
     #                           ,'Level':'Current_Volume (liters)'})
     # df2 = df2[['Event_id', 'Event_time (UTC+3)','Event_type','Current_Volume (liters)','Volume_Change (liters)','Battery_level (%)']]
@@ -734,7 +734,7 @@ def fn_currentimedf2(n_intervals):
     df2['Volume_Change (liters)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
     df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 864000] #3days###################################################
+    df2 = df2[df2['timediff'] <= 1296000] #3days###################################################
     # df2 = df2.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
     #                           ,'Level':'Current_Volume (liters)'})
     # df2 = df2[['Event_id', 'Event_time (UTC+3)','Event_type','Current_Volume (liters)','Volume_Change (liters)','Battery_level (%)']]
@@ -757,7 +757,7 @@ def fn_highestincdf2(n_intervals):
     df2['Volume_Change (liters)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
     df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 864000] #3days###################################################
+    df2 = df2[df2['timediff'] <= 1296000] #3days###################################################
     maxlevincdf2 = df2["Volume_Change (liters)"].where(df2['Event_type'] == 'Level Increase').max()
     return (maxlevincdf2)
 ########################################
@@ -776,7 +776,7 @@ def fn_highestinctimedf2(n_intervals):
     df2['Volume_Change (liters)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
     df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 864000] #3days###################################################
+    df2 = df2[df2['timediff'] <= 1296000] #3days###################################################
     maxlevincdf2 = df2["Volume_Change (liters)"].where(df2['Event_type'] == 'Level Increase').max()
     maxinctimedf2 = df2["time"].where(df2['Volume_Change (liters)'] == maxlevincdf2).max()
     maxinctimedf2 = maxinctimedf2.strftime("%d-%b-%Y %H:%M:%S")
@@ -798,7 +798,7 @@ def fn_highestdecdf2(n_intervals):
     df2['Volume_Change (liters)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
     df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 864000] #3days###################################################
+    df2 = df2[df2['timediff'] <= 1296000] #3days###################################################
     maxlevdecdf2 = df2["Volume_Change (liters)"].where(df2['Event_type'] == 'Level Decrease').max()
     return (maxlevdecdf2)    
 ########################################
@@ -818,7 +818,7 @@ def fn_highestdectimedf2(n_intervals):
     df2['Volume_Change (liters)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
     df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 864000] #3days###################################################
+    df2 = df2[df2['timediff'] <= 1296000] #3days###################################################
     maxlevdecdf2 = df2["Volume_Change (liters)"].where(df2['Event_type'] == 'Level Decrease').max()
     maxdectimedf2 = df2["time"].where(df2['Volume_Change (liters)'] == maxlevdecdf2).max()
     maxdectimedf2 = maxdectimedf2.strftime("%d-%b-%Y %H:%M:%S")
@@ -869,7 +869,7 @@ def update_1FA1185_graph(n_intervals):
     df1['Volume_Change (liters)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
     df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 864000] #3days###################################################
+    df1 = df1[df1['timediff'] <= 1296000] #3days###################################################
     df1 = df1.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
                               ,'Level':'Current_Volume (liters)'})
     df1 = df1[['Event_id', 'Event_time (UTC+3)','Event_type','Current_Volume (liters)','Volume_Change (liters)','Battery_level (%)']]
@@ -914,7 +914,7 @@ def update_1FA1A01_graph(n_intervals):
     df2['Volume_Change (liters)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
     df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
     df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 864000] #3days###################################################
+    df2 = df2[df2['timediff'] <= 1296000] #3days###################################################
     df2 = df2.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
                               ,'Level':'Current_Volume (liters)'})
     df2 = df2[['Event_id', 'Event_time (UTC+3)','Event_type','Current_Volume (liters)','Volume_Change (liters)','Battery_level (%)']]
