@@ -126,7 +126,7 @@ fig1FA1185.update_layout({
 'margin':{'l': 10, 'r': 10},
 'font_color':"#ffffff",
 'title_font_color':"#ffffff",
-"title_font":{'size': 20},
+"title_font":{'size': 15},
 })
 fig1FA1185.update_xaxes(showgrid=True)
 fig1FA1185.update_yaxes(showgrid=True)
@@ -147,7 +147,7 @@ fig1FA1A01.update_layout({
 'margin':{'l': 10, 'r': 10},
 'font_color':"#ffffff",
 'title_font_color':"#ffffff",
-"title_font":{'size': 20},
+"title_font":{'size': 15},
 })
 fig1FA1A01.update_xaxes(showgrid=True)
 fig1FA1A01.update_yaxes(showgrid=True)
