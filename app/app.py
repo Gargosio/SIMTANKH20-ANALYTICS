@@ -30,7 +30,9 @@ from dash.dependencies import Input, Output
 
 client  = pymongo.MongoClient("mongodb+srv://toloo:Godocholoo@cluster0.idj1r.mongodb.net/test")
 db = client["iotdatadb"]
-col = db["iotwaterapi"]
+col = db["sensor_data_prd"]
+#col = db["sensor_data_prd"]
+
 
 data = col.find()
 df = pd.DataFrame(data)
@@ -62,9 +64,9 @@ df1['Level'] = round(df1['Level']* 1.4286 ,2)
 df1['Event_type'] = df1['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
 df1 = df1.sort_values(by = 'time',ascending = False)
 df1['ΔVolume (Lts)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
-df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-df1 = df1[df1['timediff'] <= 86400] #3days###################################################
+# df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+# df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
+# df1 = df1[df1['timediff'] <= 86400] #3days###################################################
 df1 = df1.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
                           ,'Level':'Volume (Lts)'})
 df1 = df1[[ 'Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)',]]
@@ -90,9 +92,9 @@ df2['Level'] = round(df2['Level']* 1.4286 ,2)
 df2['Event_type'] = df2['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
 df2 = df2.sort_values(by = 'time',ascending = False)
 df2['ΔVolume (Lts)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
-df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-df2 = df2[df2['timediff'] <= 86400] #3days###################################################
+# df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+# df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
+# df2 = df2[df2['timediff'] <= 86400] #3days###################################################
 df2 = df2.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
                           ,'Level':'Volume (Lts)'})
 df2 = df2[[ 'Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)',]]
@@ -178,9 +180,9 @@ app.layout = dbc.Container(fluid=True,
              [
                 # html.P(),
                 # html.P(),  
-      html.H6("Sensor end-point provided by Silafrica SIMTANKH20 Solution"
-              ,style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgb(0,0,0,0.0)","text-align":"center","color":"#04AEC4",}
-              ),
+      # html.H6("Sensor end-point provided by Silafrica SIMTANKH20 Solution"
+      #         ,style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgb(0,0,0,0.0)","text-align":"center","color":"#04AEC4",}
+      #         ),
       html.H6("Contact tevin9316@gmail.com for more information"
               ,style = {"background-color":"rgba(0,0,0,0.0)","border-color":"rgb(0,0,0,0.0)","text-align":"center","color":"#04AEC4",}
               ),
@@ -594,16 +596,16 @@ def fn_currentvol(n_intervals):
     df1 = df.loc[(df['device'] == '1FA1185')]
     df1['time'] = pd.to_datetime(df1['time'])
     df1['time'] += timedelta(hours=3)
-    df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 86400] #3days###################################################
+    # df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
+    # df1 = df1[df1['timediff'] <= 86400] #3days###################################################
     df1['Level'] = round(df1['Level']* 1.4286 ,2)
     df1 = df1.sort_values(by = 'time',ascending = False)
     # df1['ΔVolume (Lts)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
     # df1 = df1.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
     #                           ,'Level':'Volume (Lts)'})
     # df1 = df1[['Event_id', 'Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)','Battery_level (%)']]
-    Currentvolume = df1.iloc[0,4]
+    Currentvolume = df1.iloc[0,3]
     return (Currentvolume)  
 ########################################
 @app.callback(
@@ -616,14 +618,14 @@ def fn_currentime(n_intervals):
     df1['time'] = pd.to_datetime(df1['time'])
     df1['time'] += timedelta(hours=3)
     df1 = df1.sort_values(by = 'time',ascending = False)
-    df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 86400] #3days###################################################
+    # df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
+    # df1 = df1[df1['timediff'] <= 86400] #3days###################################################
     # df1['ΔVolume (Lts)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
     # df1 = df1.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
     #                           ,'Level':'Volume (Lts)'})
     # df1 = df1[['Event_id', 'Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)','Battery_level (%)']]
-    Currenttime = df1.iloc[0,2]
+    Currenttime = df1.iloc[0,1]
     Currenttime = Currenttime.strftime("%d-%b-%Y %H:%M:%S")
     return (Currenttime)
 ########################################
@@ -640,9 +642,9 @@ def fn_highestinc(n_intervals):
     df1['Event_type'] = df1['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Increase')
     df1 = df1.sort_values(by = 'time',ascending = False)
     df1['ΔVolume (Lts)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
-    df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 86400] #3days###################################################
+    # df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
+    # df1 = df1[df1['timediff'] <= 86400] #3days###################################################
     maxlevinc = df1["ΔVolume (Lts)"].where(df1['Event_type'] == 'Level Increase').max()
     return (maxlevinc)
 ########################################
@@ -659,9 +661,9 @@ def fn_highestinctime(n_intervals):
     df1['Event_type'] = df1['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df1 = df1.sort_values(by = 'time',ascending = False)
     df1['ΔVolume (Lts)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
-    df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 86400] #3days###################################################
+    # df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
+    # df1 = df1[df1['timediff'] <= 86400] #3days###################################################
     maxlevinc = df1["ΔVolume (Lts)"].where(df1['Event_type'] == 'Level Increase').max()
     maxinctime = df1["time"].where(df1['ΔVolume (Lts)'] == maxlevinc).max()
     maxinctime = maxinctime.strftime("%d-%b-%Y %H:%M:%S")
@@ -681,9 +683,9 @@ def fn_highestdec(n_intervals):
     df1['Event_type'] = df1['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df1 = df1.sort_values(by = 'time',ascending = False)
     df1['ΔVolume (Lts)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
-    df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 86400] #3days###################################################
+    # df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
+    # df1 = df1[df1['timediff'] <= 86400] #3days###################################################
     maxlevdec = df1["ΔVolume (Lts)"].where(df1['Event_type'] == 'Level Decrease').max()
     # maxlevdec = df1["ΔVolume (Lts)"].where(df1['Event_type'] == 'Level Decrease').max()
     return (maxlevdec)    
@@ -702,9 +704,9 @@ def fn_highestdectime(n_intervals):
     df1['Event_type'] = df1['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df1 = df1.sort_values(by = 'time',ascending = False)
     df1['ΔVolume (Lts)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
-    df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 86400] #3days###################################################
+    # df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
+    # df1 = df1[df1['timediff'] <= 86400] #3days###################################################
     maxlevdec = df1["ΔVolume (Lts)"].where(df1['Event_type'] == 'Level Decrease').max()
     maxdectime = df1["time"].where(df1['ΔVolume (Lts)'] == maxlevdec).max()
     maxdectime = maxdectime.strftime("%d-%b-%Y %H:%M:%S")
@@ -723,13 +725,13 @@ def fn_currentvoldf2(n_intervals):
     df2['Level'] = round(df2['Level']* 1.4286 ,2)
     df2 = df2.sort_values(by = 'time',ascending = False)
     df2['ΔVolume (Lts)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
-    df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 86400] #3days###################################################
+    # df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
+    # df2 = df2[df2['timediff'] <= 86400] #3days###################################################
     # df2 = df2.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
     #                           ,'Level':'Volume (Lts)'})
     # df2 = df2[['Event_id', 'Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)','Battery_level (%)']]
-    Currentvolumedf2 = df2.iloc[0,4]
+    Currentvolumedf2 = df2.iloc[0,3]
     return (Currentvolumedf2)  
 ########################################
 @app.callback(
@@ -743,13 +745,13 @@ def fn_currentimedf2(n_intervals):
     df2['time'] += timedelta(hours=3)
     df2 = df2.sort_values(by = 'time',ascending = False)
     df2['ΔVolume (Lts)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
-    df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 86400] #3days###################################################
+    # df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
+    # df2 = df2[df2['timediff'] <= 86400] #3days###################################################
     # df2 = df2.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
     #                           ,'Level':'Volume (Lts)'})
     # df2 = df2[['Event_id', 'Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)','Battery_level (%)']]
-    Currenttimedf2 = df2.iloc[0,2]
+    Currenttimedf2 = df2.iloc[0,1]
     Currenttimedf2 = Currenttimedf2.strftime("%d-%b-%Y %H:%M:%S")
     return (Currenttimedf2)
 ########################################
@@ -766,9 +768,9 @@ def fn_highestincdf2(n_intervals):
     df2['Event_type'] = df2['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df2 = df2.sort_values(by = 'time',ascending = False)
     df2['ΔVolume (Lts)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
-    df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 86400] #3days###################################################
+    # df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
+    # df2 = df2[df2['timediff'] <= 86400] #3days###################################################
     maxlevincdf2 = df2["ΔVolume (Lts)"].where(df2['Event_type'] == 'Level Increase').max()
     return (maxlevincdf2)
 ########################################
@@ -785,9 +787,9 @@ def fn_highestinctimedf2(n_intervals):
     df2['Event_type'] = df2['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df2 = df2.sort_values(by = 'time',ascending = False)
     df2['ΔVolume (Lts)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
-    df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 86400] #3days###################################################
+    # df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
+    # df2 = df2[df2['timediff'] <= 86400] #3days###################################################
     maxlevincdf2 = df2["ΔVolume (Lts)"].where(df2['Event_type'] == 'Level Increase').max()
     maxinctimedf2 = df2["time"].where(df2['ΔVolume (Lts)'] == maxlevincdf2).max()
     maxinctimedf2 = maxinctimedf2.strftime("%d-%b-%Y %H:%M:%S")
@@ -807,9 +809,9 @@ def fn_highestdecdf2(n_intervals):
     df2['Event_type'] = df2['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df2 = df2.sort_values(by = 'time',ascending = False)
     df2['ΔVolume (Lts)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
-    df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 86400] #3days###################################################
+    ## df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    ## df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
+    ## df2 = df2[df2['timediff'] <= 86400] #3days###################################################
     maxlevdecdf2 = df2["ΔVolume (Lts)"].where(df2['Event_type'] == 'Level Decrease').max()
     return (maxlevdecdf2)    
 ########################################
@@ -827,9 +829,9 @@ def fn_highestdectimedf2(n_intervals):
     df2['Event_type'] = df2['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df2 = df2.sort_values(by = 'time',ascending = False)
     df2['ΔVolume (Lts)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
-    df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 86400] #3days###################################################
+    # df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
+    # df2 = df2[df2['timediff'] <= 86400] #3days###################################################
     maxlevdecdf2 = df2["ΔVolume (Lts)"].where(df2['Event_type'] == 'Level Decrease').max()
     maxdectimedf2 = df2["time"].where(df2['ΔVolume (Lts)'] == maxlevdecdf2).max()
     maxdectimedf2 = maxdectimedf2.strftime("%d-%b-%Y %H:%M:%S")
@@ -878,9 +880,9 @@ def update_1FA1185_graph(n_intervals):
     df1['Event_type'] = df1['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df1 = df1.sort_values(by = 'time',ascending = False)
     df1['ΔVolume (Lts)'] = round(abs(df1['Level'] - df1['Level'].shift(-1)),2)
-    df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
-    df1 = df1[df1['timediff'] <= 86400] #3days###################################################
+    # df1['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df1['timediff'] = (df1['sysdate'] - df1['time']).astype('timedelta64[s]') ####################################################
+    # df1 = df1[df1['timediff'] <= 86400] #3days###################################################
     df1 = df1.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
                               ,'Level':'Volume (Lts)'})
     df1 = df1[['Event_id', 'Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)','Battery_level (%)']]
@@ -923,9 +925,9 @@ def update_1FA1A01_graph(n_intervals):
     df2['Event_type'] = df2['Messagetype'].apply(lambda x: 'Level Increase' if x == 47 else 'Level Decrease')
     df2 = df2.sort_values(by = 'time',ascending = False)
     df2['ΔVolume (Lts)'] = round(abs(df2['Level'] - df2['Level'].shift(-1)),2)
-    df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
-    df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
-    df2 = df2[df2['timediff'] <= 86400] #3days###################################################
+    # df2['sysdate'] =pd.to_datetime('today',format = "%Y-%m-%d %H:%M:%S",utc='true') ####################################################
+    # df2['timediff'] = (df2['sysdate'] - df2['time']).astype('timedelta64[s]') ####################################################
+    # df2 = df2[df2['timediff'] <= 86400] #3days###################################################
     df2 = df2.rename(columns = {'_id':'Event_id','time':'Event_time (UTC+3)','Battery':'Battery_level (%)'
                               ,'Level':'Volume (Lts)'})
     df2 = df2[['Event_id', 'Event_time (UTC+3)','Event_type','Volume (Lts)','ΔVolume (Lts)','Battery_level (%)']]
