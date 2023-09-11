@@ -11,3 +11,4 @@ pandas
 datetime
 dnspython==2.2.1
 gunicorn==20.1.0
+Flask 1.0
